@@ -31,7 +31,7 @@ export async function createSessionCookie(user: {
     role: user.role,
   });
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.set({
     name: sessionCookieName(),
     value: token,
@@ -43,13 +43,13 @@ export async function createSessionCookie(user: {
   });
 }
 
-export function destroySessionCookie() {
-  const cookieStore = cookies();
+export async function destroySessionCookie() {
+  const cookieStore = await cookies();
   cookieStore.delete(sessionCookieName());
 }
 
 export async function getSessionUser() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get(sessionCookieName());
   if (!token) {
     return null;

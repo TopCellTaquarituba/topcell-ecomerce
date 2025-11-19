@@ -60,22 +60,25 @@ export default async function AdminDashboardPage() {
           {!orders.length && (
             <p className="text-sm text-muted-foreground">Nenhum pedido registrado ainda.</p>
           )}
-          {orders.map((order) => (
-            <div
-              key={order.id}
-              className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border px-4 py-3"
-            >
-              <div>
-                <p className="text-sm font-semibold">{order.customerName}</p>
-                <p className="text-xs text-muted-foreground">
-                  {order.items.length} item(s) • {formatCurrency(order.total)}
-                </p>
+          {orders.map((order) => {
+            const totalValue = Number(order.total?.toString() ?? 0);
+            return (
+              <div
+                key={order.id}
+                className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border px-4 py-3"
+              >
+                <div>
+                  <p className="text-sm font-semibold">{order.customerName}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {order.items.length} item(s) • {formatCurrency(totalValue)}
+                  </p>
+                </div>
+                <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                  {order.status}
+                </span>
               </div>
-              <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                {order.status}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </CardContent>
       </Card>
     </div>

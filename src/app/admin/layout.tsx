@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
 export default function AdminLayout({ children }: Props) {
   async function handleLogout() {
     "use server";
-    destroySessionCookie();
+    await destroySessionCookie();
   }
 
   return (

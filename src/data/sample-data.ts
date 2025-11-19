@@ -31,6 +31,7 @@ export const sampleProducts = [
     highlights: ["Tela 6.1\" ProMotion", "Câmera 48MP", "USB-C"],
     image:
       "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=800&auto=format&fit=crop&q=80",
+    gallery: [],
     price: 9999.9,
     compareAtPrice: 10499.9,
     stock: 4,
@@ -50,6 +51,7 @@ export const sampleProducts = [
     highlights: ["S Pen", "IA Galaxy", "200MP"],
     image:
       "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?w=800&auto=format&fit=crop&q=80",
+    gallery: [],
     price: 8999.9,
     compareAtPrice: 9499.9,
     stock: 8,
@@ -64,11 +66,12 @@ export const sampleProducts = [
     id: "teclado-topcell",
     name: "Teclado Mecânico RGB TopCell",
     slug: "teclado-topcell",
-    description: "Switch brown lubricado e keycaps em PBT para digitação confortável.",
+    description: "Switch brown lubrificado e keycaps em PBT para digitação confortável.",
     shortDescription: "Para gamers e criadores.",
     highlights: ["Hot-swap", "USB-C", "Layout ABNT2"],
     image:
       "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80",
+    gallery: [],
     price: 649.9,
     stock: 10,
     status: ProductStatus.PUBLISHED,
@@ -106,4 +109,7 @@ export const sampleSite = {
   postalCode: "18740-019",
   bannerCta: "Chamar no WhatsApp",
   whatsapp: "5514996228136",
+  storeHours: "Seg a Sex 9h-18h • Sábado 9h-13h",
+  shippingInfo: "Envios nacionais e retirada expressa em Taquarituba.",
+  returnPolicy: "Trocas em até 7 dias com nota fiscal e embalagem original.",
 };

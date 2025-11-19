@@ -197,11 +197,19 @@ export function CheckoutForm() {
               <FormItem>
                 <FormLabel>Observações</FormLabel>
                 <FormControl>
-                  <Textarea rows={4} placeholder="Acesse o prédio pelo portão lateral..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+                <Textarea
+                  rows={4}
+                  placeholder="Acesse o prédio pelo portão lateral..."
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
           />
         </div>
 

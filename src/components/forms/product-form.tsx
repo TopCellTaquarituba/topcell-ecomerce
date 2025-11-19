@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { productSchema, ProductInput } from "@/lib/validators";
@@ -34,7 +34,7 @@ export function ProductForm({ categories, onSuccess }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const form = useForm<ProductInput>({
-    resolver: zodResolver(productSchema),
+    resolver: zodResolver(productSchema) as Resolver<ProductInput>,
     defaultValues: {
       name: "",
       slug: "",
@@ -111,7 +111,14 @@ export function ProductForm({ categories, onSuccess }: Props) {
             <FormItem>
               <FormLabel>Imagem (URL)</FormLabel>
               <FormControl>
-                <Input placeholder="https://..." {...field} />
+                <Input
+                  placeholder="https://..."
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -176,7 +183,14 @@ export function ProductForm({ categories, onSuccess }: Props) {
             <FormItem>
               <FormLabel>Descrição curta</FormLabel>
               <FormControl>
-                <Input placeholder="Resumo" {...field} />
+                <Input
+                  placeholder="Resumo"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -189,7 +203,14 @@ export function ProductForm({ categories, onSuccess }: Props) {
             <FormItem>
               <FormLabel>Descrição completa</FormLabel>
               <FormControl>
-                <Textarea rows={4} {...field} />
+                <Textarea
+                  rows={4}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

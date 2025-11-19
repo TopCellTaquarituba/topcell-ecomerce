@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
 import { priceListSchema, PriceListInput } from "@/lib/validators";
@@ -19,11 +19,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 
+type PriceListFormValues = Omit<PriceListInput, "isDefault" | "currency"> & {
+  isDefault: boolean;
+  currency: string;
+};
+
 export function PriceListForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const form = useForm<PriceListInput>({
-    resolver: zodResolver(priceListSchema),
+  const form = useForm<PriceListFormValues>({
+    resolver: zodResolver(priceListSchema) as Resolver<PriceListFormValues>,
     defaultValues: {
       name: "",
       description: "",
@@ -32,7 +37,7 @@ export function PriceListForm() {
     },
   });
 
-  const onSubmit = async (values: PriceListInput) => {
+  const onSubmit = async (values: PriceListFormValues) => {
     try {
       setLoading(true);
       const response = await fetch("/api/price-lists", {
@@ -82,7 +87,14 @@ export function PriceListForm() {
             <FormItem>
               <FormLabel>Descrição</FormLabel>
               <FormControl>
-                <Input placeholder="Uso geral" {...field} />
+                <Input
+                  placeholder="Uso geral"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

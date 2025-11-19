@@ -81,7 +81,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>Título principal</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -94,7 +94,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>Subtítulo</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -108,7 +108,7 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Destaque</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -121,7 +121,7 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Headline sobre</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -134,7 +134,14 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Texto sobre</FormLabel>
               <FormControl>
-                <Textarea rows={4} {...field} />
+                <Textarea
+                  rows={4}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -148,7 +155,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type="email" {...field} />
+                  <Input type="email" {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -161,7 +168,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>Telefone</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -175,7 +182,7 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Endereço</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -189,7 +196,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>Cidade</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -202,7 +209,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>Estado</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -215,7 +222,7 @@ export function SiteSettingsForm({ defaults }: Props) {
               <FormItem>
                 <FormLabel>CEP</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} value={field.value ?? ""} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -229,7 +236,7 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Horários</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -242,7 +249,14 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Informações de envio</FormLabel>
               <FormControl>
-                <Textarea rows={3} {...field} />
+                <Textarea
+                  rows={3}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -255,7 +269,14 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Política de troca</FormLabel>
               <FormControl>
-                <Textarea rows={3} {...field} />
+                <Textarea
+                  rows={3}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -268,7 +289,7 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>WhatsApp</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -281,7 +302,7 @@ export function SiteSettingsForm({ defaults }: Props) {
             <FormItem>
               <FormLabel>Texto CTA</FormLabel>
               <FormControl>
-                <Input {...field} />
+                <Input {...field} value={field.value ?? ""} />
               </FormControl>
               <FormMessage />
             </FormItem>

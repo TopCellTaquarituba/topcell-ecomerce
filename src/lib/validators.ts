@@ -35,7 +35,7 @@ export const priceListSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(2),
   description: z.string().optional().nullable(),
-  isDefault: z.boolean().optional().default(false),
+  isDefault: z.boolean().default(false),
   currency: z.string().min(3).default("BRL"),
 });
 

@@ -124,7 +124,14 @@ export function IntegrationForm() {
             <FormItem>
               <FormLabel>API Key</FormLabel>
               <FormControl>
-                <Input placeholder="sk_prod_xxx" {...field} />
+                <Input
+                  placeholder="sk_prod_xxx"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -137,7 +144,14 @@ export function IntegrationForm() {
             <FormItem>
               <FormLabel>Base URL</FormLabel>
               <FormControl>
-                <Input placeholder="https://api.exemplo.com" {...field} />
+                <Input
+                  placeholder="https://api.exemplo.com"
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
