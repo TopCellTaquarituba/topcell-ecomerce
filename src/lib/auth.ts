@@ -60,17 +60,33 @@ export async function getSessionUser() {
     return null;
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: payload.sub },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-    },
-  });
+  const fallbackUser = {
+    id: String(payload.sub),
+    name: payload.name ?? "Administrador TopCell",
+    email: payload.email ?? "admin@topcell.com.br",
+    role: payload.role ?? Role.ADMIN,
+  };
 
-  return user;
+  if (!process.env.DATABASE_URL) {
+    return fallbackUser;
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: payload.sub },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    return user ?? fallbackUser;
+  } catch (error) {
+    console.warn("Não foi possível recuperar usuário do banco, usando fallback.", error);
+    return fallbackUser;
+  }
 }
 
 export async function getAdminSession() {
