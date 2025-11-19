@@ -7,11 +7,18 @@ import { formatCurrency } from "@/lib/formatters";
 
 export default async function AdminDashboardPage() {
   const summary = await getDashboardSummary();
-  const orders = await prisma.order.findMany({
-    include: { items: true },
-    orderBy: { createdAt: "desc" },
-    take: 5,
-  });
+  let orders: Awaited<ReturnType<typeof prisma.order.findMany>> = [];
+
+  try {
+    orders = await prisma.order.findMany({
+      include: { items: true },
+      orderBy: { createdAt: "desc" },
+      take: 5,
+    });
+  } catch (error) {
+    console.warn("Não foi possível carregar pedidos, exibindo lista vazia.", error);
+    orders = [];
+  }
 
   const cards = [
     {
