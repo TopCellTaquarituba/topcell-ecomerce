@@ -5,9 +5,13 @@ import { getDashboardSummary } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/formatters";
 
+type OrderWithItems = Awaited<
+  ReturnType<typeof prisma.order.findMany>
+>[number];
+
 export default async function AdminDashboardPage() {
   const summary = await getDashboardSummary();
-  let orders: Awaited<ReturnType<typeof prisma.order.findMany>> = [];
+  let orders: OrderWithItems[] = [];
 
   try {
     orders = await prisma.order.findMany({
