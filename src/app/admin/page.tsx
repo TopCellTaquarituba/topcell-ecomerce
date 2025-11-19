@@ -5,23 +5,53 @@ import { getDashboardSummary } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/formatters";
 
-type OrderWithItems = Awaited<
-  ReturnType<typeof prisma.order.findMany>
->[number];
+const emptyOrder = {
+  id: "placeholder",
+  customerName: "Pedido offline",
+  customerEmail: "offline@topcell.com.br",
+  status: "OFFLINE" as const,
+  items: [],
+};
 
 export default async function AdminDashboardPage() {
   const summary = await getDashboardSummary();
-  let orders: OrderWithItems[] = [];
+  type SafeOrder = {
+    id: string;
+    customerName: string;
+    customerEmail: string;
+    status: string;
+    items: {
+      id: string;
+      productName: string;
+      quantity: number;
+      unitPrice: number;
+    }[];
+    total: number;
+  };
+  let orders: SafeOrder[] = [];
 
   try {
-    orders = await prisma.order.findMany({
+    const fromDb = await prisma.order.findMany({
       include: { items: true },
       orderBy: { createdAt: "desc" },
       take: 5,
     });
+    orders = fromDb.map((order) => ({
+      id: order.id,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      status: order.status,
+      items: order.items.map((item) => ({
+        id: item.id,
+        productName: item.productName,
+        quantity: item.quantity,
+        unitPrice: Number(item.unitPrice?.toString() ?? 0),
+      })),
+      total: Number(order.total?.toString() ?? 0),
+    }));
   } catch (error) {
     console.warn("Não foi possível carregar pedidos, exibindo lista vazia.", error);
-    orders = [];
+    orders = [emptyOrder];
   }
 
   const cards = [
