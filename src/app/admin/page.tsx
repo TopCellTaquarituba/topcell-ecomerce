@@ -5,29 +5,31 @@ import { getDashboardSummary } from "@/lib/data";
 import { prisma } from "@/lib/prisma";
 import { formatCurrency } from "@/lib/formatters";
 
-const emptyOrder = {
+type SafeOrder = {
+  id: string;
+  customerName: string;
+  customerEmail: string;
+  status: string;
+  items: {
+    id: string;
+    productName: string;
+    quantity: number;
+    unitPrice: number;
+  }[];
+  total: number;
+};
+
+const emptyOrder: SafeOrder = {
   id: "placeholder",
   customerName: "Pedido offline",
   customerEmail: "offline@topcell.com.br",
-  status: "OFFLINE" as const,
+  status: "OFFLINE",
   items: [],
+  total: 0,
 };
 
 export default async function AdminDashboardPage() {
   const summary = await getDashboardSummary();
-  type SafeOrder = {
-    id: string;
-    customerName: string;
-    customerEmail: string;
-    status: string;
-    items: {
-      id: string;
-      productName: string;
-      quantity: number;
-      unitPrice: number;
-    }[];
-    total: number;
-  };
   let orders: SafeOrder[] = [];
 
   try {
