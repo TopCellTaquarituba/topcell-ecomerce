@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     }
 
     if (!user) {
-      if (useFallbackAuth && data.email === fallbackEmail && data.password === fallbackPassword) {
+      if (data.email === fallbackEmail && data.password === fallbackPassword) {
         const fallbackUser = {
           id: "fallback-admin",
           email: fallbackEmail,
