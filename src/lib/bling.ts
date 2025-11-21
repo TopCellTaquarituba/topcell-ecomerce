@@ -4,7 +4,7 @@ export function getBlingAuthUrl() {
   const clientId = process.env.BLING_CLIENT_ID;
   const state = process.env.BLING_OAUTH_STATE ?? "topcell-state";
   const redirectUri =
-    process.env.BLING_REDIRECT_URI ?? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/api/integrations/bling/callback`;
+    process.env.BLING_REDIRECT_URI ?? `${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/integrations/bling/callback`;
 
   if (!clientId) {
     return null;
