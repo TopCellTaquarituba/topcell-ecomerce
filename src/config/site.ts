@@ -15,9 +15,9 @@ export const siteConfig = {
   },
   locationLabel: "Centro • Taquarituba",
   heroHighlights: [
-    "Assistência Técnica Especializada",
+    "Envio para todo o Brasil",
     "Retirada expressa no Centro 529",
-    "Integrações com APIs de pagamento e logística",
+    "Checkout seguro e parcelado",
   ],
   collections: [
     { slug: "smartphones", label: "Produtos para celular" },

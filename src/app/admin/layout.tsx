@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: Props) {
 
   return (
     <div className="min-h-screen bg-[#fafafa]">
-      <div className="mx-auto flex max-w-7xl gap-6 px-4 py-10">
+      <div className="flex w-full gap-6 px-4 py-10 sm:px-6 lg:px-10">
         <AdminSidebar items={navItems} logoutAction={handleLogout} />
         <main className="flex-1 space-y-6">
           <div className="flex flex-col gap-3 rounded-3xl border bg-white p-6 shadow-sm lg:hidden">

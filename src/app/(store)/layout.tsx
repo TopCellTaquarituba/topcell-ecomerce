@@ -11,8 +11,8 @@ export default function StorefrontLayout({ children }: Props) {
     <div className="flex min-h-screen flex-col bg-[#f5f5f4]">
       <SiteAnnouncement />
       <SiteHeader />
-      <main className="flex-1 pb-16">
-        <div className="mx-auto w-full max-w-6xl px-4 py-10">{children}</div>
+      <main className="flex-1 bg-[#f8f8f8] pb-16">
+        <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-12">{children}</div>
       </main>
       <SiteFooter />
     </div>

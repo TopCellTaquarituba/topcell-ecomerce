@@ -35,10 +35,15 @@ export function CategoryForm() {
   const onSubmit = async (values: CategoryInput) => {
     try {
       setLoading(true);
+      const payload = {
+        ...values,
+        description: values.description?.trim() || undefined,
+        heroImage: values.heroImage?.trim() || undefined,
+      };
       const response = await fetch("/api/categories", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
       if (!response.ok) {
         throw new Error("Erro ao salvar");

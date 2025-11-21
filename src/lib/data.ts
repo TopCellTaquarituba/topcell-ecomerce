@@ -1,6 +1,4 @@
 import { Prisma, ProductStatus } from "@prisma/client";
-
-import { sampleBanners, sampleCategories, sampleProducts, sampleSite } from "@/data/sample-data";
 import { prisma } from "@/lib/prisma";
 
 export type CommerceProduct = {
@@ -54,93 +52,55 @@ const mapProduct = (
 });
 
 export async function getProducts(options?: { categorySlug?: string; featuredOnly?: boolean }) {
-  try {
-    const products = await prisma.product.findMany({
-      where: {
-        status: ProductStatus.PUBLISHED,
-        ...(options?.featuredOnly ? { isFeatured: true } : {}),
-        ...(options?.categorySlug
-          ? {
-              category: {
-                slug: options.categorySlug,
-              },
-            }
-          : {}),
-      },
-      include: {
-        category: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+  const products = await prisma.product.findMany({
+    where: {
+      status: ProductStatus.PUBLISHED,
+      ...(options?.featuredOnly ? { isFeatured: true } : {}),
+      ...(options?.categorySlug
+        ? {
+            category: {
+              slug: options.categorySlug,
+            },
+          }
+        : {}),
+    },
+    include: {
+      category: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
-    if (!products.length) {
-      return sampleProducts;
-    }
-
-    return products.map(mapProduct);
-  } catch (error) {
-    console.warn("Falling back to sample products", error);
-    return sampleProducts;
-  }
+  return products.map(mapProduct);
 }
 
 export async function getProductBySlug(slug: string) {
-  try {
-    const product = await prisma.product.findUnique({
-      where: { slug },
-      include: { category: true, prices: { include: { priceList: true } } },
-    });
+  const product = await prisma.product.findUnique({
+    where: { slug },
+    include: { category: true, prices: { include: { priceList: true } } },
+  });
 
-    if (!product) {
-      return sampleProducts.find((item) => item.slug === slug) ?? null;
-    }
-
-    return mapProduct(product);
-  } catch (error) {
-    console.warn("Falling back to sample product", error);
-    return sampleProducts.find((item) => item.slug === slug) ?? null;
+  if (!product) {
+    return null;
   }
+
+  return mapProduct(product);
 }
 
 export async function getCategories() {
-  try {
-    const items = await prisma.category.findMany({
-      orderBy: { name: "asc" },
-    });
-    if (!items.length) return sampleCategories;
-    return items;
-  } catch (error) {
-    console.warn("Falling back to sample categories", error);
-    return sampleCategories;
-  }
+  const items = await prisma.category.findMany({
+    orderBy: { name: "asc" },
+  });
+  return items;
 }
 
 export async function getSiteSettings() {
-  try {
-    const site = await prisma.siteSetting.findUnique({
-      where: { id: 1 },
-      include: { banners: true, integrations: true },
-    });
-
-    if (!site) {
-      return {
-        ...sampleSite,
-        banners: sampleBanners,
-        integrations: [],
-      };
-    }
-
-    return site;
-  } catch (error) {
-    console.warn("Falling back to sample site settings", error);
-    return {
-      ...sampleSite,
-      banners: sampleBanners,
-      integrations: [],
-    };
-  }
+  const site = await prisma.siteSetting.findUnique({
+    where: { id: 1 },
+    include: { banners: true, integrations: true },
+  });
+  return site;
 }
 
 export async function getDashboardSummary() {
@@ -156,10 +116,11 @@ export async function getDashboardSummary() {
       categoryCount,
       orderCount,
     };
-  } catch {
+  } catch (error) {
+    console.error("Erro ao buscar resumo do dashboard", error);
     return {
-      productCount: sampleProducts.length,
-      categoryCount: sampleCategories.length,
+      productCount: 0,
+      categoryCount: 0,
       orderCount: 0,
     };
   }

@@ -1,114 +1,106 @@
 import Link from "next/link";
-import { BatteryCharging, Plug, ShoppingCart } from "lucide-react";
+import { ArrowRight, CreditCard, ShieldCheck, ShoppingBag, Truck } from "lucide-react";
 
 import { siteConfig } from "@/config/site";
 import { CategoryPill } from "@/components/categories/category-pill";
 import { ProductCard } from "@/components/products/product-card";
 import { BannerGrid } from "@/components/site/banner-grid";
-import { InfoGrid } from "@/components/site/info-grid";
-import { IntegrationList } from "@/components/site/integration-list";
+import { HeroCarousel } from "@/components/site/hero-carousel";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { getCategories, getProducts, getSiteSettings } from "@/lib/data";
 
+const faqs = [
+  {
+    question: "Quais formas de pagamento aceitam?",
+    answer: "Cartões de crédito, Pix e boleto via Mercado Pago com parcelamento.",
+  },
+  {
+    question: "Posso retirar na loja física?",
+    answer: "Sim. Selecione retirada ao finalizar o pedido e avisaremos quando estiver pronto.",
+  },
+  {
+    question: "Como acompanho meu pedido?",
+    answer: "Você receberá o código de rastreio por e-mail e WhatsApp assim que o pedido for enviado.",
+  },
+];
+
+const supportHighlights = [
+  {
+    icon: ShoppingBag,
+    title: "Curadoria premium",
+    description: "Linha enxuta com os eletrônicos mais pedidos e garantia oficial.",
+  },
+  {
+    icon: Truck,
+    title: "Envio rápido",
+    description: "Pedidos despachados em até 24h úteis para todo o Brasil.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Compra segura",
+    description: "Plataforma protegida e integração completa com Mercado Pago.",
+  },
+  {
+    icon: CreditCard,
+    title: "Parcelamento fácil",
+    description: "Até 12x no cartão ou pagamento à vista com Pix e boleto.",
+  },
+];
+
 export default async function HomePage() {
-  const [site, categories, products, featuredProducts] = await Promise.all([
+  const [site, categories, products] = await Promise.all([
     getSiteSettings(),
     getCategories(),
     getProducts({}),
-    getProducts({ featuredOnly: true }),
   ]);
 
-  const heroStats = [
-    { label: "Produtos ativos", value: products.length },
-    { label: "Categorias", value: categories.length },
-    { label: "Entrega express", value: "Taquarituba • SP" },
-  ];
+  const heroBanners = site?.banners ?? [];
+  const secondaryBanners = heroBanners.slice(1);
+  const featuredProducts = products.filter((product) => product.isFeatured).slice(0, 4);
+  const newProducts = products.slice(0, 6);
 
   return (
     <div className="space-y-16">
-      <section className="grid gap-8 rounded-[40px] border bg-gradient-to-br from-white to-zinc-50 px-6 py-10 md:grid-cols-[1.1fr_0.9fr] md:px-10">
-        <div className="space-y-6">
-          <Badge className="bg-black text-white">TopCell Taquarituba</Badge>
-          <h1 className="text-3xl font-semibold leading-tight text-zinc-900 md:text-4xl">
-            {site?.heroTitle ?? "Tecnologia minimalista em Taquarituba"}
-          </h1>
-          <p className="text-base text-muted-foreground md:text-lg">
-            {site?.heroSubtitle ??
-              "Produtos para celular, periféricos, bebidas especiais e eletrodomésticos conectados em um lugar só."}
-          </p>
-          <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-            {siteConfig.heroHighlights.map((highlight) => (
-              <span key={highlight} className="rounded-full border px-4 py-1">
-                {highlight}
-              </span>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-3">
-            <Button asChild size="lg" className="gap-2 rounded-full px-6">
-              <Link href="/products">
-                <ShoppingCart className="h-4 w-4" />
-                Ver catálogo
-              </Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="rounded-full border-black px-6 text-black"
-            >
-              <Link href={`https://wa.me/${siteConfig.contact.whatsapp}`}>
-                Conversar com especialista
-              </Link>
-            </Button>
-          </div>
-          <dl className="grid gap-4 sm:grid-cols-3">
-            {heroStats.map((stat) => (
-              <div key={stat.label} className="rounded-3xl border px-4 py-3">
-                <dt className="text-xs text-muted-foreground">{stat.label}</dt>
-                <dd className="text-2xl font-semibold text-zinc-900">{stat.value}</dd>
-              </div>
-            ))}
-          </dl>
+      <section className="space-y-6">
+        <HeroCarousel
+          banners={heroBanners}
+          fallbackTitle={site?.heroTitle ?? "Seu e-commerce completo de eletrônicos"}
+          fallbackSubtitle={
+            site?.heroSubtitle ?? "Produtos originais, envio rápido e retirada em Taquarituba."
+          }
+        />
+        <div className="grid gap-4 rounded-[32px] border bg-white p-6 shadow-sm sm:grid-cols-3">
+          {[
+            { label: "Produtos ativos", value: products.length },
+            { label: "Categorias", value: categories.length },
+            { label: "Envios", value: "Brasil inteiro" },
+          ].map((stat) => (
+            <div key={stat.label}>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">{stat.label}</p>
+              <p className="text-2xl font-semibold text-zinc-900">{stat.value}</p>
+            </div>
+          ))}
         </div>
-        <div className="rounded-[32px] border bg-white p-6 shadow-sm">
-          <p className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-            Soluções rápidas
-          </p>
-          <InfoGrid
-            items={[
-              {
-                icon: BatteryCharging,
-                title: "Assistência e upgrades",
-                description: "Troca de telas, migração de dados e reparos em até 24h.",
-              },
-              {
-                icon: Plug,
-                title: "Integração APIs",
-                description: "Consultoria para integrar Neon DB, pagamentos e hubs logísticos.",
-              },
-            ]}
-          />
-          <div className="mt-6 rounded-2xl border bg-zinc-950 px-5 py-6 text-white">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
-              Localização
-            </p>
-            <p className="text-lg font-semibold">{siteConfig.address.street}</p>
-            <p className="text-sm text-zinc-300">
-              {siteConfig.address.city} - {siteConfig.address.state} • CEP {siteConfig.address.postalCode}
-            </p>
-          </div>
+        <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+          {siteConfig.heroHighlights.map((highlight) => (
+            <span key={highlight} className="rounded-full border px-4 py-1">
+              {highlight}
+            </span>
+          ))}
         </div>
       </section>
 
       <section id="categorias" className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Categorias</p>
-            <h2 className="text-2xl font-semibold text-zinc-900">Escolha o universo ideal</h2>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Departamentos</p>
+            <h2 className="text-2xl font-semibold text-zinc-900">Explore por categoria</h2>
           </div>
-          <Button asChild variant="ghost">
-            <Link href="/products">Ver tudo</Link>
+          <Button asChild variant="ghost" className="rounded-full">
+            <Link href="/products">
+              Ver catálogo
+              <ArrowRight className="ml-1 h-4 w-4" />
+            </Link>
           </Button>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -123,102 +115,125 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="produtos" className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Destaques</p>
-            <h2 className="text-2xl font-semibold text-zinc-900">Escolhas TopCell</h2>
-          </div>
-          <Button asChild variant="ghost">
-            <Link href="/products?tipo=destaques">Catálogo completo</Link>
-          </Button>
-        </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {featuredProducts.slice(0, 3).map((product) => (
-            <ProductCard key={product.id} product={product} />
+      <section className="rounded-[32px] border bg-white p-6 shadow-sm">
+        <p className="text-xs uppercase tracking-wide text-muted-foreground">Benefícios</p>
+        <h2 className="text-2xl font-semibold text-zinc-900">Por que comprar na TopCell</h2>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {supportHighlights.map((highlight) => (
+            <div key={highlight.title} className="rounded-2xl border p-4">
+              <highlight.icon className="h-8 w-8 text-primary" />
+              <p className="mt-3 font-semibold text-zinc-900">{highlight.title}</p>
+              <p className="text-sm text-muted-foreground">{highlight.description}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Loja completa</p>
-            <h2 className="text-2xl font-semibold text-zinc-900">Novidades</h2>
+      {featuredProducts.length > 0 && (
+        <section className="space-y-6" id="destaques">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Destaques</p>
+              <h2 className="text-2xl font-semibold text-zinc-900">Escolhas TopCell</h2>
+            </div>
+            <Button asChild variant="outline" className="rounded-full">
+              <Link href="/products?ordenar=maior">Ver todos</Link>
+            </Button>
           </div>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {products.slice(0, 6).map((product) => (
-            <ProductCard key={`list-${product.id}`} product={product} />
-          ))}
-        </div>
-      </section>
-
-      <section id="servicos" className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">Serviços</p>
-            <h2 className="text-2xl font-semibold text-zinc-900">Experiências guiadas</h2>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {featuredProducts.map((product) => (
+              <ProductCard key={`featured-${product.id}`} product={product} />
+            ))}
           </div>
-        </div>
-        <BannerGrid banners={site?.banners ?? []} />
-      </section>
+        </section>
+      )}
 
-      <section className="grid gap-8 lg:grid-cols-[0.6fr_0.4fr]">
-        <div className="space-y-4 rounded-3xl border bg-white p-6 shadow-sm">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">
-            Integrações e APIs externas
-          </p>
-          <h3 className="text-2xl font-semibold text-zinc-900">
-            Expandimos seu projeto com conectores oficiais
-          </h3>
+      {newProducts.length > 0 && (
+        <section className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">Novidades</p>
+              <h2 className="text-2xl font-semibold text-zinc-900">Chegaram agora</h2>
+            </div>
+            <Button asChild variant="ghost" className="rounded-full">
+              <Link href="/products">Catálogo completo</Link>
+            </Button>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {newProducts.map((product) => (
+              <ProductCard key={`new-${product.id}`} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {secondaryBanners.length > 0 && (
+        <section className="space-y-4">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">Campanhas</p>
+            <h2 className="text-2xl font-semibold text-zinc-900">Ofertas em destaque</h2>
+          </div>
+          <BannerGrid banners={secondaryBanners} />
+        </section>
+      )}
+
+      <section id="sobre" className="grid gap-6 rounded-3xl border bg-white p-6 shadow-sm lg:grid-cols-[0.6fr_0.4fr]">
+        <div className="space-y-3">
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Sobre nós</p>
+          <h3 className="text-2xl font-semibold text-zinc-900">{site?.heroTitle ?? "Nossa história"}</h3>
           <p className="text-sm text-muted-foreground">
-            Configure gateways de pagamento, bancos de dados serverless, logística inteligente e
-            notificações personalizadas dentro do painel TopCell. Tudo administrado em minutos.
+            {site?.aboutBody ??
+              "Somos um e-commerce independente localizado em Taquarituba, dedicado a oferecer os melhores eletrônicos com entrega rápida e atendimento humanizado."}
           </p>
-          <IntegrationList items={site?.integrations ?? []} />
+          <p className="text-sm text-muted-foreground">
+            {site?.mission ??
+              "Nossa missão é facilitar o dia a dia com produtos confiáveis, suporte próximo e opções flexíveis de envio."}
+          </p>
         </div>
-        <div className="space-y-4 rounded-3xl border bg-white p-6 shadow-sm">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Contato direto</p>
-          <h3 className="text-xl font-semibold text-zinc-900">Atendimento personalizado</h3>
-          <div className="space-y-2 text-sm">
-            <p>Email: {site?.contactEmail}</p>
-            <p>Telefone: {site?.contactPhone}</p>
-            <p>
-              Endereço: {site?.addressLine} • {site?.city} - {site?.state}
-            </p>
-            <p>CEP: {site?.postalCode}</p>
-          </div>
-          <Button asChild className="w-full rounded-full">
-            <Link href="/checkout">Iniciar pedido rápido</Link>
-          </Button>
+        <div className="space-y-2 rounded-2xl border bg-zinc-50 p-4 text-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Endereço</p>
+          <p>{site?.addressLine}</p>
+          <p>
+            {site?.city} - {site?.state} · CEP {site?.postalCode}
+          </p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mt-4">Atendimento</p>
+          <p>{site?.storeHours ?? "Seg a Sex 9h-18h · Sábado 9h-13h"}</p>
         </div>
       </section>
 
-      <section className="rounded-3xl border bg-zinc-900 p-6 text-white md:p-10">
+      <section id="contato" className="rounded-3xl border bg-white p-6 shadow-sm">
         <div className="space-y-2">
-          <p className="text-xs uppercase tracking-[0.2em] text-zinc-400">Retirada em loja</p>
-          <h3 className="text-3xl font-semibold">Centro de Taquarituba</h3>
-          <p className="text-sm text-zinc-300">
-            Rua Centro, 529 • CEP 18740-019 • Whatsapp {site?.contactPhone}
-          </p>
+          <p className="text-xs uppercase tracking-wide text-muted-foreground">Contato direto</p>
+          <h3 className="text-2xl font-semibold text-zinc-900">Fale conosco</h3>
         </div>
-        <div className="mt-6 grid gap-4 text-sm text-zinc-200 md:grid-cols-2">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              Horários
-            </p>
-            <p>{site?.storeHours ?? "Seg a Sex 9h-18h • Sábado 9h-13h"}</p>
+        <div className="mt-4 grid gap-6 md:grid-cols-2">
+          <div className="space-y-3">
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Canais oficiais
+            </h4>
+            <p>Email: {site?.contactEmail}</p>
+            <p>WhatsApp: {site?.contactPhone}</p>
+            <div className="flex flex-wrap gap-2">
+              <Button asChild className="rounded-full">
+                <Link href={`https://wa.me/${siteConfig.contact.whatsapp}`}>Chamar no WhatsApp</Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href={`tel:${siteConfig.contact.phone.replace(/\D/g, "")}`}>Ligar agora</Link>
+              </Button>
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
-              Benefícios exclusivos
-            </p>
-            <ul className="list-inside list-disc space-y-1">
-              <li>Checkout rápido integrado ao painel</li>
-              <li>Integração Neon DB com Prisma</li>
-              <li>Dashboard administrativo completo</li>
-            </ul>
+          <div className="space-y-3 rounded-2xl border bg-zinc-50 p-4">
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Perguntas frequentes
+            </h4>
+            <div className="space-y-3 text-sm">
+              {faqs.map((faq) => (
+                <div key={faq.question}>
+                  <p className="font-semibold text-zinc-900">{faq.question}</p>
+                  <p className="text-muted-foreground">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
