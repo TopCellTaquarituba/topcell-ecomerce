@@ -26,18 +26,19 @@ export async function POST(request: Request) {
     } | null = null;
 
     if (!useFallbackAuth) {
-      user = await prisma.user
-        .findUnique({
+      try {
+        user = await prisma.user.findUnique({
           where: { email: data.email },
-        })
-        .catch((error) => {
-          if (error instanceof PrismaClientInitializationError) {
-            console.warn("Prisma indisponível, usando fallback de login.");
-            useFallbackAuth = true;
-            return null;
-          }
-          throw error;
         });
+      } catch (error) {
+        if (error instanceof PrismaClientInitializationError) {
+          console.warn("Prisma indispon├¡vel, usando fallback de login.");
+        } else {
+          console.warn("Falha ao consultar usu├írio no banco, usando fallback de login.", error);
+        }
+        useFallbackAuth = true;
+        user = null;
+      }
     }
 
     if (!user) {
@@ -52,12 +53,12 @@ export async function POST(request: Request) {
         return NextResponse.json({ user: fallbackUser });
       }
 
-      return NextResponse.json({ message: "Credenciais inválidas" }, { status: 401 });
+      return NextResponse.json({ message: "Credenciais inv├ílidas" }, { status: 401 });
     }
 
     const isValid = await verifyPassword(data.password, user.password);
     if (!isValid) {
-      return NextResponse.json({ message: "Credenciais inválidas" }, { status: 401 });
+      return NextResponse.json({ message: "Credenciais inv├ílidas" }, { status: 401 });
     }
 
     await createSessionCookie(user);
@@ -72,7 +73,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     if (error instanceof ZodError) {
-      return NextResponse.json({ message: "Dados inválidos", issues: error.flatten() }, { status: 400 });
+      return NextResponse.json({ message: "Dados inv├ílidos", issues: error.flatten() }, { status: 400 });
     }
     console.error("Erro login", error);
     return NextResponse.json({ message: "Erro interno" }, { status: 500 });
