@@ -1,5 +1,22 @@
 import { z } from "zod";
 
+const isValidMedia = (value: string) =>
+  value.startsWith("http://") || value.startsWith("https://") || value.startsWith("data:");
+
+const optionalMediaField = z
+  .string()
+  .trim()
+  .refine((value) => value.length === 0 || isValidMedia(value), {
+    message: "Informe um link v�lido ou envie a imagem.",
+  });
+
+const mediaArrayField = z
+  .string()
+  .trim()
+  .refine((value) => isValidMedia(value), {
+    message: "Imagem inv�lida.",
+  });
+
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -21,8 +38,8 @@ export const productSchema = z.object({
   description: z.string().optional().nullable(),
   shortDescription: z.string().optional().nullable(),
   highlights: z.array(z.string()).optional().default([]),
-  image: z.string().url().optional().or(z.literal("")).nullable(),
-  gallery: z.array(z.string().url()).optional().default([]),
+  image: optionalMediaField.optional().nullable(),
+  gallery: z.array(mediaArrayField).optional().default([]),
   price: z.coerce.number().positive(),
   compareAtPrice: z.coerce.number().optional().nullable(),
   stock: z.coerce.number().int().nonnegative(),

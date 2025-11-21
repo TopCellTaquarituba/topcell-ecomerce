@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 
 import { useCart } from "@/hooks/use-cart";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { formatCurrency } from "@/lib/formatters";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +21,10 @@ export function CartButton() {
   const items = useCart((state) => state.items);
   const removeItem = useCart((state) => state.removeItem);
   const updateQuantity = useCart((state) => state.updateQuantity);
-  const total = items.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  const isMounted = useIsMounted();
+  const safeItems = isMounted ? items : [];
+  const total = safeItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
+  const itemCount = safeItems.reduce((acc, item) => acc + item.quantity, 0);
 
   return (
     <Sheet>
@@ -28,9 +32,9 @@ export function CartButton() {
         <Button variant="ghost" className="relative gap-2 px-3 text-sm font-medium">
           <ShoppingBag className="h-5 w-5" />
           <span>Carrinho</span>
-          {items.length > 0 && (
+          {itemCount > 0 && (
             <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
-              {items.reduce((acc, item) => acc + item.quantity, 0)}
+              {itemCount}
             </span>
           )}
         </Button>
@@ -44,13 +48,14 @@ export function CartButton() {
         </SheetHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto">
-          {items.length === 0 && (
+          {safeItems.length === 0 && (
             <p className="text-sm text-muted-foreground">
-              Nenhum item por aqui. Explore os destaques de smartphones, periféricos ou bebidas
-              funcionais.
+              {isMounted
+                ? "Nenhum item por aqui. Explore os destaques de smartphones, periféricos ou bebidas funcionais."
+                : "Carregando seu carrinho..."}
             </p>
           )}
-          {items.map((item) => (
+          {safeItems.map((item) => (
             <div key={item.id} className="flex gap-3 rounded-xl border p-3">
               <div className="flex-1">
                 <p className="text-sm font-semibold">{item.name}</p>

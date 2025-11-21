@@ -52,7 +52,6 @@ export default async function AdminProductsPage() {
                 id: category.id,
                 name: category.name,
               }))}
-              onSuccess={() => {}}
             />
           </CardContent>
         </Card>

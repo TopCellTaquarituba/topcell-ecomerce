@@ -11,12 +11,14 @@ type Props = {
 };
 
 export function ProductCard({ product }: Props) {
+  const coverImage = product.image ?? product.gallery[0] ?? null;
+
   return (
     <div className="group flex h-full flex-col rounded-3xl border bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
       <div className="relative mb-4 aspect-[4/3] overflow-hidden rounded-2xl bg-zinc-100">
-        {product.image ? (
+        {coverImage ? (
           <Image
-            src={product.image}
+            src={coverImage}
             alt={product.name}
             fill
             sizes="(min-width: 768px) 300px, 100vw"

@@ -3,6 +3,7 @@
 import { Minus, Plus, Trash2 } from "lucide-react";
 
 import { useCart } from "@/hooks/use-cart";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import { formatCurrency } from "@/lib/formatters";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,8 +12,20 @@ export function CartItems() {
   const items = useCart((state) => state.items);
   const removeItem = useCart((state) => state.removeItem);
   const updateQuantity = useCart((state) => state.updateQuantity);
+  const isMounted = useIsMounted();
+  const safeItems = isMounted ? items : [];
 
-  if (items.length === 0) {
+  if (!isMounted) {
+    return (
+      <Card>
+        <CardContent className="py-6 text-center text-sm text-muted-foreground">
+          Carregando carrinho...
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (safeItems.length === 0) {
     return (
       <Card>
         <CardContent className="py-6 text-center text-sm text-muted-foreground">
@@ -24,7 +37,7 @@ export function CartItems() {
 
   return (
     <div className="space-y-4">
-      {items.map((item) => (
+      {safeItems.map((item) => (
         <Card key={item.id}>
           <CardContent className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center">
             <div className="flex-1">
