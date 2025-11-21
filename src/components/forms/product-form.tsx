@@ -169,7 +169,7 @@ export function ProductForm({ categories }: Props) {
               <FormItem>
                 <FormLabel>Código / SKU</FormLabel>
                 <FormControl>
-                  <Input placeholder="SKU interno" {...field} />
+                  <Input placeholder="SKU interno" value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} name={field.name} ref={field.ref} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -182,7 +182,7 @@ export function ProductForm({ categories }: Props) {
               <FormItem>
                 <FormLabel>Marca</FormLabel>
                 <FormControl>
-                  <Input placeholder="Marca do produto" {...field} />
+                  <Input placeholder="Marca do produto" value={field.value ?? ""} onChange={field.onChange} onBlur={field.onBlur} name={field.name} ref={field.ref} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

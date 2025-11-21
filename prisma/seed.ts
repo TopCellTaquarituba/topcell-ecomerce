@@ -369,12 +369,18 @@ async function main() {
       where: { slug: product.category },
     });
 
+    const extendedProduct = product as typeof product & {
+      brand?: string;
+      weight?: number;
+      freeShipping?: boolean;
+    };
+
     const created = await prisma.product.create({
       data: {
         name: product.name,
         slug: product.slug,
         sku: product.sku,
-        brand: product.brand ?? "TopCell",
+        brand: extendedProduct.brand ?? "TopCell",
         description: product.description,
         shortDescription: product.shortDescription,
         highlights: product.highlights,
@@ -383,8 +389,8 @@ async function main() {
         price: decimal(product.price),
         compareAtPrice: product.compareAtPrice ? decimal(product.compareAtPrice) : undefined,
         stock: product.stock,
-        weight: product.weight ? decimal(product.weight) : undefined,
-        freeShipping: Boolean(product.freeShipping),
+        weight: extendedProduct.weight ? decimal(extendedProduct.weight) : undefined,
+        freeShipping: Boolean(extendedProduct.freeShipping),
         isFeatured: product.isFeatured,
         status: product.status,
         categoryId: category?.id,
