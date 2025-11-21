@@ -12,8 +12,10 @@ export const dynamic = "force-dynamic";
 export default function BlingCallbackPage({ searchParams }: Props) {
   const { code, state } = searchParams;
   const expectedState = process.env.BLING_OAUTH_STATE;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
-  const redirectUrl = new URL("/admin/import", baseUrl || "http://localhost:3000");
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+  const redirectUrl = new URL("/admin/import", baseUrl);
 
   if (!code) {
     redirectUrl.searchParams.set("status", "error");
