@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type CategoryOption = {
   id: string;
@@ -47,10 +48,14 @@ export function ProductForm({ categories }: Props) {
     defaultValues: {
       name: "",
       slug: "",
+      sku: "",
+      brand: "",
       description: "",
       shortDescription: "",
       price: 0,
       stock: 0,
+      weight: undefined,
+      freeShipping: false,
       categoryId: "",
       isFeatured: false,
       highlights: [],
@@ -156,7 +161,52 @@ export function ProductForm({ categories }: Props) {
             </FormItem>
           )}
         />
-        <div className="grid gap-4 sm:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="sku"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Código / SKU</FormLabel>
+                <FormControl>
+                  <Input placeholder="SKU interno" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Marca</FormLabel>
+                <FormControl>
+                  <Input placeholder="Marca do produto" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={form.control}
+          name="freeShipping"
+          render={({ field }) => (
+            <FormItem className="flex items-center gap-3 rounded-2xl border bg-white p-3">
+              <FormControl>
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel className="text-sm font-semibold">Frete grátis</FormLabel>
+                <p className="text-xs text-muted-foreground">
+                  Selecionar caso o produto não gere cobrança de frete.
+                </p>
+              </div>
+            </FormItem>
+          )}
+        />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <FormField
             control={form.control}
             name="price"
@@ -205,7 +255,29 @@ export function ProductForm({ categories }: Props) {
               </FormItem>
             )}
           />
-        </div>
+          <FormField
+    control={form.control}
+    name="weight"
+    render={({ field }) => (
+      <FormItem>
+        <FormLabel>Peso (kg)</FormLabel>
+        <FormControl>
+          <Input
+            type="number"
+            step="0.01"
+            placeholder="0.00"
+            value={field.value ?? ""}
+            onChange={field.onChange}
+            onBlur={field.onBlur}
+            name={field.name}
+            ref={field.ref}
+          />
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
+</div>
         <FormField
           control={form.control}
           name="categoryId"

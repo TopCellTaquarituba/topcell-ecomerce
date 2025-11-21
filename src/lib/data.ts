@@ -5,6 +5,7 @@ export type CommerceProduct = {
   id: string;
   name: string;
   slug: string;
+  brand?: string | null;
   description: string | null;
   shortDescription: string | null;
   highlights: string[];
@@ -13,6 +14,8 @@ export type CommerceProduct = {
   price: number;
   compareAtPrice?: number | null;
   stock: number;
+  weight?: number | null;
+  freeShipping: boolean;
   category?: {
     id?: string;
     slug?: string | null;
@@ -36,6 +39,7 @@ const mapProduct = (
   id: product.id,
   name: product.name,
   slug: product.slug,
+  brand: product.brand ?? null,
   description: product.description,
   shortDescription: product.shortDescription ?? null,
   highlights: product.highlights,
@@ -44,6 +48,8 @@ const mapProduct = (
   price: decimalToNumber(product.price) ?? 0,
   compareAtPrice: decimalToNumber(product.compareAtPrice),
   stock: product.stock,
+  weight: decimalToNumber(product.weight),
+  freeShipping: product.freeShipping,
   category: product.category
     ? { id: product.category.id, name: product.category.name, slug: product.category.slug }
     : undefined,

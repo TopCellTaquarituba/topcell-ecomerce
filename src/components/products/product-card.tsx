@@ -66,23 +66,28 @@
          )}
        </div>
        <div className="flex flex-1 flex-col rounded-b-[32px] border-t bg-white p-4">
-         <div className="flex items-center justify-between text-xs text-muted-foreground">
-           <span>{product.category?.name}</span>
-           <span>Estoque: {product.stock}</span>
-         </div>
-         <Link href={`/products/${product.slug}`}>
-           <h3 className="mt-2 text-lg font-semibold text-zinc-900 lg:text-xl">{product.name}</h3>
-           <p className="text-sm text-muted-foreground">{product.shortDescription}</p>
-         </Link>
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <span>{product.brand ?? product.category?.name ?? "TopCell"}</span>
+          <span>Estoque: {product.stock}</span>
+        </div>
+        <Link href={`/products/${product.slug}`}>
+          <h3 className="mt-2 text-lg font-semibold text-zinc-900 lg:text-xl">{product.name}</h3>
+          <p className="text-sm text-muted-foreground">{product.shortDescription}</p>
+        </Link>
          <div className="mt-4 flex flex-col gap-1">
            <div className="text-xl font-semibold text-zinc-900">
              {formatCurrency(product.price)}
            </div>
-           {product.compareAtPrice && (
-             <p className="text-xs text-muted-foreground line-through">
-               {formatCurrency(product.compareAtPrice)}
-             </p>
-           )}
+          {product.compareAtPrice && (
+            <p className="text-xs text-muted-foreground line-through">
+              {formatCurrency(product.compareAtPrice)}
+            </p>
+          )}
+          {product.freeShipping && (
+            <Badge variant="secondary" className="w-fit bg-emerald-100 text-emerald-700">
+              Frete grátis
+            </Badge>
+          )}
          </div>
          <div className="mt-4">
            <AddToCartButton product={product} />

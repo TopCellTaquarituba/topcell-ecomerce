@@ -7,11 +7,13 @@ import { destroySessionCookie } from "@/lib/auth";
 const navItems: NavItem[] = [
   { label: "Visão geral", href: "/admin", icon: "layers" },
   { label: "Produtos", href: "/admin/products", icon: "products" },
+  { label: "Novo produto", href: "/admin/products/new", icon: "newProduct" },
   { label: "Pedidos", href: "/admin/orders", icon: "orders" },
   { label: "Logística", href: "/admin/logistics", icon: "logistics" },
   { label: "Categorias", href: "/admin/categories", icon: "categories" },
   { label: "Listas de preço", href: "/admin/price-lists", icon: "priceLists" },
   { label: "Integrações", href: "/admin/integrations", icon: "integrations" },
+  { label: "Importar produtos", href: "/admin/import", icon: "import" },
   { label: "Configurações", href: "/admin/settings", icon: "settings" },
 ];
 

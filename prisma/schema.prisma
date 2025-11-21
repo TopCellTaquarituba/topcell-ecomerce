@@ -61,6 +61,7 @@ model Product {
   name              String
   slug              String         @unique
   sku               String?
+  brand             String?
   description       String?
   shortDescription  String?
   highlights        String[]       @default([])
@@ -69,6 +70,8 @@ model Product {
   price             Decimal        @db.Decimal(10, 2)
   compareAtPrice    Decimal?       @db.Decimal(10, 2)
   stock             Int            @default(0)
+  weight            Decimal?       @db.Decimal(10, 2)
+  freeShipping      Boolean        @default(false)
   isFeatured        Boolean        @default(false)
   status            ProductStatus  @default(DRAFT)
   categoryId        String?

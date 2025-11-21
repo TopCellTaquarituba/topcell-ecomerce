@@ -38,6 +38,7 @@ export async function POST(request: Request) {
         name: data.name,
         slug: data.slug,
         sku: data.sku ?? undefined,
+        brand: data.brand ?? undefined,
         description: data.description,
         shortDescription: data.shortDescription,
         highlights: data.highlights ?? [],
@@ -48,6 +49,8 @@ export async function POST(request: Request) {
           ? new Prisma.Decimal(data.compareAtPrice)
           : undefined,
         stock: data.stock,
+        weight: data.weight ? new Prisma.Decimal(data.weight) : undefined,
+        freeShipping: Boolean(data.freeShipping),
         isFeatured: Boolean(data.isFeatured),
         status: data.status,
         categoryId: data.categoryId ?? undefined,

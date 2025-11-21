@@ -12,6 +12,8 @@ type ProductRow = {
   id: string;
   name: string;
   slug: string;
+  sku?: string | null;
+  brand?: string | null;
   price: number;
   stock: number;
   category?: string | null;
@@ -36,6 +38,8 @@ export function ProductTable({ products }: Props) {
       <TableHeader>
         <TableRow>
           <TableHead>Produto</TableHead>
+          <TableHead>Código</TableHead>
+          <TableHead>Marca</TableHead>
           <TableHead>Categoria</TableHead>
           <TableHead>Estoque</TableHead>
           <TableHead>Preço</TableHead>
@@ -51,6 +55,8 @@ export function ProductTable({ products }: Props) {
                 <p className="text-xs text-muted-foreground">{product.slug}</p>
               </div>
             </TableCell>
+            <TableCell>{product.sku ?? "-"}</TableCell>
+            <TableCell>{product.brand ?? "-"}</TableCell>
             <TableCell>{product.category ?? "-"}</TableCell>
             <TableCell>{product.stock}</TableCell>
             <TableCell>{formatCurrency(product.price)}</TableCell>

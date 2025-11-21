@@ -2,17 +2,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ClipboardList, Layers, Package, Settings, ShoppingCart, Tags, Truck, Zap } from "lucide-react";
+import {
+  ClipboardList,
+  Layers,
+  Package,
+  PlusSquare,
+  Settings,
+  ShoppingCart,
+  Tags,
+  Truck,
+  Upload,
+  Zap,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 const iconMap = {
   layers: Layers,
   products: Package,
+  newProduct: PlusSquare,
   orders: ClipboardList,
   logistics: Truck,
   categories: Tags,
   priceLists: ShoppingCart,
   integrations: Zap,
+  import: Upload,
   settings: Settings,
 } satisfies Record<string, LucideIcon>;
 
